@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-
+import Logo from "../../../public/Logo.png"
 const columns = [
   {
     title: "Products",
@@ -25,10 +25,10 @@ export default function Footer() {
       <div className="container grid grid-cols-1 md:grid-cols-5 gap-8 py-16">
         <div>
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-[conic-gradient(at_70%_120%,_#00e5ff,_#7c4dff,_#00bcff)] shadow-[0_0_30px_#7c4dff66]"></div>
-            <span className="font-display text-lg tracking-tight">
-              Chatriox
-            </span>
+           <a href="/" className="flex items-center gap-2">
+          <img src={Logo} className="w-10"/>
+          <span className="font-display text-lg tracking-tight">Chatriox</span>
+        </a>
           </div>
           <p className="mt-4 text-sm text-foreground/70 max-w-sm">
             AI-powered enterprise marketing platform. Built for scale,
@@ -99,7 +99,7 @@ export default function Footer() {
             <input
               required
               type="email"
-              placeholder="Work email"
+              placeholder="Email"
               className="w-full glass rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-sky-400/50"
             />
             <button className="btn-gradient rounded-md px-4 text-white text-sm font-semibold">

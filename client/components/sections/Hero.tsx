@@ -146,8 +146,9 @@ export default function Hero() {
     <section className="relative bg-white border-y border-black/10 pt-20 md:pt-28 pb-16 md:pb-24">
       <div className="container grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <h1 className="font-display text-4xl md:text-6xl leading-[1.05]">AI Supercharges Your Marketing. Scale Like Never Before.</h1>
-          <p className="mt-4 text-lg text-foreground/70">Bulk Email Sending, WhatsApp Marketing, AI Insights & Validation — trusted by the world’s leading enterprises. A premium platform engineered for result, compliance, reliability, and speed.</p>
+          <h1 className="font-display text-4xl md:text-6xl leading-[1.05]">Too Busy to Do Outreach? Let AI Handle It for You.</h1>
+          <p className="mt-4 text-lg text-foreground/70"> Automate your entire outreach process: bulk emails, WhatsApp messaging, and lead scraping. Get your time back to focus on revenue-generating activities.
+</p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <a href="#pricing" className="btn-gradient px-6 py-3 rounded-md text-white font-semibold shadow-glow">Start Free Trial</a>
           </div>

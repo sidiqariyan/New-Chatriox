@@ -9,17 +9,19 @@ import WhyUs from "@/components/sections/WhyUs";
 import Blogs from "@/components/sections/Blogs";
 
 import TrustedBy from "@/components/sections/TrustedBy";
+import KeyBenefits from "@/components/sections/KeyBenifits";
 
 export default function Index() {
   return (
     <div className="relative">
       <Hero />
-      <TrustedBy />
+      {/* <TrustedBy /> */}
+      <KeyBenefits />
       <Services />
       <Integrations />
       <Testimonials />
       <CaseStudies />
-      <Map />
+      {/* <Map /> */}
       <Security />
       <Blogs />
     </div>

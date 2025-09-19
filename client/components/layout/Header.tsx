@@ -172,10 +172,10 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-3">
           <Button className="btn-glass" variant="secondary">
-            Book a Demo
+            <a href="/login"> Book a Demo</a>
           </Button>
           <a
-            href="#pricing"
+            href="/signup"
             className="btn-gradient px-5 py-2 rounded-md text-white text-sm font-semibold shadow-glow"
           >
             Start Free Trial

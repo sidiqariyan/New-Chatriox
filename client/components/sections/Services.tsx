@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Mail, MessageSquare, ShieldCheck, Brain, LayoutTemplate, CheckCircle2 } from "lucide-react";
+import { Mail, MessageSquare, ShieldCheck, Brain, LayoutTemplate, CheckCircle2, Search} from "lucide-react";
 import BulkEmailImage from "../../assets/AdobeStock_261207157_Preview.jpeg"
 import EmailValidationImage from "../../assets/Gemini_Generated_Image_awz60uawz60uawz6.png"
 import WhatsAppImage from "../../assets/Gemini_Generated_Image_jnzbwyjnzbwyjnzb.png"
@@ -52,6 +52,20 @@ const services = [
       "Realtime API at the edge with global PoPs",
       "Bulk lists import with async processing",
       "Detailed status codes and remediation guidance",
+    ],
+  },
+  {
+    key: "Lead",
+    title: "Lead Scraper",
+    image: EmailValidationImage, // Replace with: ValidationImage,
+     Icon: Search,
+    desc: "Find verified B2B contacts in seconds with precise filters for role, industry, tech stack, and region. Export to CSV or sync directly to your CRM.",
+    features: [
+      "Company, domain, and role-based lookups",
+      "Tech stack and industry filters",
+      "Verified emails with validation score",
+      "Enrichment: LinkedIn and firmographics",
+      "One-click export to CSV/CRM",
     ],
   },
   {
