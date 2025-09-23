@@ -50,7 +50,7 @@ function DonutChart() {
   const R = 70;
   const C = 2 * Math.PI * R;
   return (
-    <svg viewBox="0 0 180 180" className="w-44 h-44">
+    <svg viewBox="0 0 180 180" className="w-32 h-32 md:w-44 md:h-44">
       {segs.map((s, i) => {
         const dash = (s / total) * C;
         const gap = C - dash;
@@ -80,7 +80,7 @@ function DonutChart() {
 function Bars() {
   const heights = [44, 56, 62, 70, 78, 86, 96];
   return (
-    <div className="flex items-end gap-2 h-40">
+    <div className="flex items-end gap-2 h-32 md:h-40">
       {heights.map((h, i) => (
         <div key={i} className="w-7 rounded bg-gradient-to-t from-[#7c3aed33] to-[#38bdf8]" style={{ height: `${h}%` }} />
       ))}
@@ -91,13 +91,13 @@ function Bars() {
 function DashboardMock() {
   return (
     <div className="rounded-2xl overflow-hidden bg-white border border-black/10 shadow-sm">
-      <div className="p-5 grid grid-cols-4 gap-4">
+      <div className="p-4 md:p-5 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <Metric label="Total Emails Sent Monthly" value="100M+" />
         <Metric label="Open Rate Every Month" value="90%" />
         <Metric label="Click Rate Every Month" value="80%+" />
         <Metric label="Active Campaigns" value="100K+" />
       </div>
-      <div className="grid grid-cols-2 gap-4 p-5 pt-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 md:p-5 pt-0">
         <div className="rounded-xl border border-black/10 bg-white p-5">
           <div className="text-foreground/70 text-sm mb-2">Email Performance</div>
           <LineChart />
@@ -114,7 +114,7 @@ function DashboardMock() {
           </ul>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4 p-5 pt-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 md:p-5 pt-0">
         <div className="rounded-xl border border-black/10 bg-white p-5">
           <div className="text-foreground/70 text-sm mb-2">Top Performing Campaigns</div>
           <ul className="text-foreground/80 text-xs space-y-2">
@@ -143,8 +143,8 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative bg-white border-y border-black/10 pt-20 md:pt-28 pb-16 md:pb-24">
-      <div className="container grid md:grid-cols-2 gap-10 items-center">
+    <section className="relative overflow-hidden bg-white border-y border-black/10 pt-20 md:pt-28 pb-16 md:pb-24">
+      <div className="container grid md:grid-cols-2 gap-6 md:gap-10 items-center">
         <div>
           <h1 className="font-display text-4xl md:text-6xl leading-[1.05]">Too Busy to Do Outreach? Let AI Handle It for You.</h1>
           <p className="mt-4 text-lg text-foreground/70"> Automate your entire outreach process: bulk emails, WhatsApp messaging, and lead scraping. Get your time back to focus on revenue-generating activities.
@@ -153,7 +153,7 @@ export default function Hero() {
             <a href="/signup" className="px-6 py-3 rounded-md text-white font-semibold shadow-glow bg-sky-500 hover:bg-sky-700">Start Free Trial</a>
           </div>
         </div>
-        <div className="relative">
+        <div className="relative mt-8 md:mt-0">
           <div className="absolute -top-10 -right-10 h-56 w-56 rounded-full bg-sky-500/40 blur-3xl" style={{ transform: `translateY(${offset}px)` }} />
           <DashboardMock />
         </div>
