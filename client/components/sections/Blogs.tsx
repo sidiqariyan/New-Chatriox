@@ -16,8 +16,7 @@ interface BlogPost {
   createdAt?: string;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://chatriox.com/api";
-const BLOG_API = import.meta.env.VITE_BLOG_API_URL || `${API_BASE_URL}/blog/posts`;
+const BLOG_API: string | undefined = import.meta.env.VITE_BLOG_API_URL;
 
 export default function Blogs() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -26,11 +25,14 @@ export default function Blogs() {
   useEffect(() => {
     let isMounted = true;
     (async () => {
+      if (!BLOG_API) {
+        if (isMounted) setLoading(false);
+        return;
+      }
       try {
         const res = await fetch(BLOG_API, { headers: { "Content-Type": "application/json" } });
         if (!res.ok) throw new Error(`Failed to load posts (${res.status})`);
         const data = await res.json();
-        // Accept common shapes: {data: []} | []
         const items: BlogPost[] = Array.isArray(data) ? data : (data.data || data.posts || []);
         if (isMounted) setPosts(items.filter(Boolean));
       } catch (e) {
