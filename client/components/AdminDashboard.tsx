@@ -138,6 +138,7 @@ const AdminDashboard: React.FC = () => {
             <option value="30d">Last 30 days</option>
             <option value="90d">Last 90 days</option>
           </select>
+          <a href="/admin/blogs" className="bg-sky-600 text-white px-4 py-2 rounded-xl hover:bg-sky-700 transition-colors">Manage Posts</a>
           <button className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition-colors">
             <Download className="inline mr-2" size={16} />
             Export Report
