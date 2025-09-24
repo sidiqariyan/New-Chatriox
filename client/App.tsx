@@ -27,6 +27,9 @@ import Docs from "./pages/Docs";
 import Api from "./pages/Api";
 import Status from "./pages/Status";
 import CaseStudiesPage from "./pages/CaseStudiesPage";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import AdminBlog from "./components/AdminBlog";
 import SecurityPage from "./pages/SecurityPage";
 import About from "./pages/About";
 import Careers from "./pages/Careers";
@@ -156,6 +159,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/help-center" element={<HelpCenter />} />
       <Route path="/services" element={<Services />} />
       <Route path="/how-to-use" element={<HowToUse />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
       {/* Auth Routes */}
       <Route 
         path="/login" 
@@ -222,9 +227,13 @@ const AppRoutes: React.FC = () => {
         path="/checkout" 
         element={user ? <CheckoutPage /> : <Navigate to="/login" replace />} 
       />
-      <Route 
-        path="/admin" 
-        element={user ? <AdminDashboard /> : <Navigate to="/login" replace />} 
+      <Route
+        path="/admin"
+        element={user ? <AdminDashboard /> : <Navigate to="/login" replace />}
+      />
+      <Route
+        path="/admin/blogs"
+        element={user && user.role === 'admin' ? <AdminBlog /> : <Navigate to="/login" replace />}
       />
 
       {/* Email Template Builder Routes */}
