@@ -5,6 +5,7 @@ const Campaign = require('../models/Campaign');
 const WhatsAppCampaign = require('../models/WhatsAppCampaign');
 const EmailValidation = require('../models/EmailValidation');
 const Template = require('../models/EmailTemplate');
+const BlogPost = require('../models/BlogPost');
 
 const router = express.Router();
 
@@ -134,6 +135,11 @@ router.get('/dashboard', [auth, admin], async (req, res) => {
       }
     });
 
+    // Content stats
+    const totalBlogPosts = await BlogPost.countDocuments({ category: 'blog' });
+    const publishedBlogPosts = await BlogPost.countDocuments({ category: 'blog', published: true });
+    const caseStudies = await BlogPost.countDocuments({ category: 'case-study', published: true });
+
     // Growth metrics
     const previousPeriodStart = new Date(startDate.getTime() - (now.getTime() - startDate.getTime()));
     const previousNewUsers = await User.countDocuments({
@@ -172,6 +178,11 @@ router.get('/dashboard', [auth, admin], async (req, res) => {
         planDistribution,
         alerts: {
           trialExpiringUsers
+        },
+        content: {
+          totalBlogPosts,
+          publishedBlogPosts,
+          caseStudies
         }
       }
     });
@@ -611,6 +622,40 @@ router.delete('/templates/:id', [auth, admin], async (req, res) => {
       success: false,
       message: 'Server error' 
     });
+  }
+});
+
+// Update user role (admin/user)
+router.put('/users/:id/role', [auth, admin], async (req, res) => {
+  try {
+    const { role } = req.body;
+    if (!['admin', 'user'].includes(role)) {
+      return res.status(400).json({ success: false, message: 'Invalid role' });
+    }
+    const user = await User.findByIdAndUpdate(req.params.id, { role }, { new: true }).select('-password');
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    res.json({ success: true, message: 'Role updated', data: user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Create user (by admin)
+router.post('/users', [auth, admin], async (req, res) => {
+  try {
+    const { name, email, password, role = 'user', plan = 'starter', planStatus = 'trial' } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, message: 'Name, email, password required' });
+    }
+    const exists = await User.findOne({ email });
+    if (exists) return res.status(400).json({ success: false, message: 'Email already exists' });
+    const user = new User({ name, email, password, role, plan, planStatus });
+    await user.save();
+    const out = user.toObject();
+    delete out.password;
+    res.status(201).json({ success: true, data: out });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 
