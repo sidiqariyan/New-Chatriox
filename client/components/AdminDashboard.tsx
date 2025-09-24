@@ -42,7 +42,7 @@ const AdminDashboard: React.FC = () => {
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: ['admin-dashboard', timeRange],
     queryFn: async () => {
-      const response = await fetch(`https://chatriox.com/api/admin/dashboard?timeRange=${timeRange}`, {
+      const response = await fetch(`/api/admin/dashboard?timeRange=${timeRange}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return response.json();
@@ -55,8 +55,8 @@ const AdminDashboard: React.FC = () => {
     queryFn: async () => {
       const params = new URLSearchParams();
       if (userFilter !== 'all') params.append('planStatus', userFilter);
-      
-      const response = await fetch(`https://chatriox.com/api/admin/users?${params}`, {
+
+      const response = await fetch(`/api/admin/users?${params}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return response.json();
@@ -67,7 +67,7 @@ const AdminDashboard: React.FC = () => {
   const { data: analyticsData } = useQuery({
     queryKey: ['admin-analytics', timeRange],
     queryFn: async () => {
-      const response = await fetch(`https://chatriox.com/api/admin/analytics?timeRange=${timeRange}`, {
+      const response = await fetch(`/api/admin/analytics?timeRange=${timeRange}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return response.json();
@@ -77,7 +77,7 @@ const AdminDashboard: React.FC = () => {
   const stats = dashboardData?.data?.overview || {};
   const revenue = dashboardData?.data?.revenue || {};
   const campaigns = dashboardData?.data?.campaigns || {};
-  const alerts = dashboardData?.data?.alerts || {};
+  const alerts = dashboardData?.data?.alerts || {}; const content = dashboardData?.data?.content || {};
 
   const statsCards = [
     {
@@ -193,6 +193,22 @@ const AdminDashboard: React.FC = () => {
             </div>
           </motion.div>
         ))}
+      </div>
+
+      {/* Content Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="text-sm text-gray-600 dark:text-gray-400">Blog Posts (Published)</div>
+          <div className="text-2xl font-display font-bold mt-1">{content?.publishedBlogPosts || 0}</div>
+        </div>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="text-sm text-gray-600 dark:text-gray-400">Total Blog Posts</div>
+          <div className="text-2xl font-display font-bold mt-1">{content?.totalBlogPosts || 0}</div>
+        </div>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="text-sm text-gray-600 dark:text-gray-400">Case Studies</div>
+          <div className="text-2xl font-display font-bold mt-1">{content?.caseStudies || 0}</div>
+        </div>
       </div>
 
       {/* Charts Section */}
@@ -342,8 +358,17 @@ const AdminDashboard: React.FC = () => {
                         <button className="text-blue-600 hover:text-blue-700 text-sm">
                           <Eye size={14} />
                         </button>
-                        <button className="text-green-600 hover:text-green-700 text-sm">
+                        <button className="text-green-600 hover:text-green-700 text-sm" onClick={async () => {
+                          await fetch(`/api/admin/users/${user._id}/role`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` }, body: JSON.stringify({ role: 'admin' }) });
+                          alert('Promoted to admin');
+                        }}>
                           <UserCheck size={14} />
+                        </button>
+                        <button className="text-red-600 hover:text-red-700 text-sm" onClick={async () => {
+                          await fetch(`/api/admin/users/${user._id}/role`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` }, body: JSON.stringify({ role: 'user' }) });
+                          alert('Demoted to user');
+                        }}>
+                          <UserX size={14} />
                         </button>
                       </div>
                     </td>
@@ -354,6 +379,12 @@ const AdminDashboard: React.FC = () => {
           </div>
         )}
       </motion.div>
+
+      {/* Create User */}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-lg font-semibold font-display text-gray-900 dark:text-white mb-4">Create User</h3>
+        <CreateUserForm />
+      </div>
 
       {/* Revenue Analytics */}
       <motion.div
@@ -383,6 +414,46 @@ const AdminDashboard: React.FC = () => {
         </div>
       </motion.div>
     </div>
+  );
+};
+
+const CreateUserForm: React.FC = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState<'user'|'admin'>('user');
+  const [plan, setPlan] = useState<'starter'|'professional'|'business'|'enterprise'>('starter');
+  const [planStatus, setPlanStatus] = useState<'trial'|'active'|'expired'|'cancelled'>('trial');
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res = await fetch('/api/admin/users', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` }, body: JSON.stringify({ name, email, password, role, plan, planStatus }) });
+    if (res.ok) { alert('User created'); setName(''); setEmail(''); setPassword(''); } else { const err = await res.json().catch(()=>({})); alert(err.message||'Failed'); }
+  };
+  return (
+    <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <input className="border rounded px-3 py-2" placeholder="Name" value={name} onChange={e=>setName(e.target.value)} />
+      <input className="border rounded px-3 py-2" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} />
+      <input className="border rounded px-3 py-2" placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
+      <select className="border rounded px-3 py-2" value={role} onChange={e=>setRole(e.target.value as any)}>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+      <select className="border rounded px-3 py-2" value={plan} onChange={e=>setPlan(e.target.value as any)}>
+        <option value="starter">Starter</option>
+        <option value="professional">Professional</option>
+        <option value="business">Business</option>
+        <option value="enterprise">Enterprise</option>
+      </select>
+      <select className="border rounded px-3 py-2" value={planStatus} onChange={e=>setPlanStatus(e.target.value as any)}>
+        <option value="trial">Trial</option>
+        <option value="active">Active</option>
+        <option value="expired">Expired</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <div className="md:col-span-3">
+        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Create</button>
+      </div>
+    </form>
   );
 };
 
