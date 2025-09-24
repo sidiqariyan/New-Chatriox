@@ -30,6 +30,7 @@ const menu = [
       { title: "API", desc: "Stable, versioned endpoints" },
       { title: "Status", desc: "Live uptime and incidents" },
       { title: "Case Studies", desc: "100x ROI stories" },
+      { title: "Blog", desc: "Insights and updates" },
       { title: "Security", desc: "GDPR, ISO, SOC2" },
       { title: "Help Center", desc: "Guides and troubleshooting" },
       { title: "Services", desc: "All tools overview" },
