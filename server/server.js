@@ -145,6 +145,9 @@ app.use('/api/whatsapp-web', require('./routes/whatsapp-web'));
 app.use('/api/subscription', require('./routes/payments'));
 app.use('/api/templates', require('./routes/email-templates'));
 app.use('/api/ai', require('./routes/ai'));
+app.use('/api/blog', require('./routes/blog'));
+// Serve uploaded assets
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Template usage tracking middleware
 const trackTemplateUsage = async (req, res, next) => {
